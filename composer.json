@@ -1,8 +1,8 @@
 {
-    "name": "rafael/php-weather",
+    "name": "rafacunha033/php-weather",
     "autoload": {
         "psr-4": {
-            "Rafael\\PhpWeather\\": "src/"
+            "PhpWeather\\": "src/"
         }
     },
     "authors": [
