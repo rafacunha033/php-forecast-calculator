@@ -1,0 +1,15 @@
+{
+    "name": "rafael/php-weather",
+    "autoload": {
+        "psr-4": {
+            "Rafael\\PhpWeather\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "rafacunha033",
+            "email": "rafacunha.prof033@gmail.com"
+        }
+    ],
+    "require": {}
+}
