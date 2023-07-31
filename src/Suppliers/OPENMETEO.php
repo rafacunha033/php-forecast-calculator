@@ -14,16 +14,19 @@ class OPENMETEO implements WeatherSupplierInterface
     {
         
     }
-    // latitude=52.52&longitude=13.41&hourly=temperature_2m
-    public function fetchWeatherInformation($latitude, $longitude)
+    
+    public function fetchWeatherInformation($city)
     {
-        $ch = curl_init();
-       
+        $coordinates = $this->fetchCoordinates($city);
+
         $params = [
-            "latitude" => $latitude,
-            "longitude" => $longitude,
-            "timezone" => "America/Sao_Paulo",
-            "daily" => ["temperature_2m_max", "temperature_2m_min"]
+            "latitude" => $coordinates->latitude,
+            "longitude" => $coordinates->longitude,
+            "timezone" => $coordinates->timezone,
+            "daily" => [
+                "temperature_2m_max",
+                "temperature_2m_min"
+            ]
         ];
 
         $url = $this->foreacast_api_url.http_build_query($params);
@@ -33,14 +36,14 @@ class OPENMETEO implements WeatherSupplierInterface
             CURLOPT_RETURNTRANSFER => true
         ];
         
+        $ch = curl_init();
         curl_setopt_array($ch, $options);
-        
         $response = curl_exec($ch);
 
         return $response;   
     }
 
-    public function fetchCoordinates(string $city): string
+    private function fetchCoordinates(string $city)
     {
         $ch = curl_init();
        
@@ -58,9 +61,9 @@ class OPENMETEO implements WeatherSupplierInterface
         
         curl_setopt_array($ch, $options);
         
-        $response = curl_exec($ch);
+        $response = json_decode(curl_exec($ch));
 
-        return $response;     
+        return $response->results[0];     
     }
 
 
