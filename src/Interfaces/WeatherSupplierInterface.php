@@ -3,5 +3,5 @@
 namespace PhpWeather\Interfaces;
 
 interface WeatherSupplierInterface {
-    public function fetchWeatherInformation();
+    public function fetchWeatherInformation($latitude, $longitude);
 }
