@@ -3,6 +3,7 @@
 namespace PhpWeather\Suppliers;
 
 use Exception;
+use InvalidArgumentException;
 use PhpWeather\Interfaces\WeatherSupplierInterface;
 
 class OPENMETEO implements WeatherSupplierInterface
@@ -17,16 +18,17 @@ class OPENMETEO implements WeatherSupplierInterface
     
     public function fetchWeatherInformation($city)
     {
+        if (!is_string($city)) {
+            throw new InvalidArgumentException("Parameter 'city' must be a string.");
+        }
+
         $coordinates = $this->fetchCoordinates($city);
 
         $params = [
             "latitude" => $coordinates->latitude,
             "longitude" => $coordinates->longitude,
             "timezone" => $coordinates->timezone,
-            "daily" => [
-                "temperature_2m_max",
-                "temperature_2m_min"
-            ]
+            "current_weather" => true
         ];
 
         $url = $this->foreacast_api_url.http_build_query($params);
