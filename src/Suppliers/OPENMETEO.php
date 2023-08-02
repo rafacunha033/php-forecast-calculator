@@ -16,7 +16,7 @@ class OPENMETEO implements WeatherSupplierInterface
         
     }
     
-    public function fetchWeatherInformation($city)
+    public function fetchCurrentWeather(string $city)
     {
         if (!is_string($city)) {
             throw new InvalidArgumentException("Parameter 'city' must be a string.");
@@ -40,12 +40,12 @@ class OPENMETEO implements WeatherSupplierInterface
         
         $ch = curl_init();
         curl_setopt_array($ch, $options);
-        $response = curl_exec($ch);
-
-        return $response;   
+        $responseArray = json_decode(curl_exec($ch), true);
+        
+        return $responseArray['current_weather']['temperature'];   
     }
 
-    private function fetchCoordinates(string $city)
+    public function fetchCoordinates(string $city)
     {
         $ch = curl_init();
        
@@ -67,6 +67,4 @@ class OPENMETEO implements WeatherSupplierInterface
 
         return $response->results[0];     
     }
-
-
 }

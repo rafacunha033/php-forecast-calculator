@@ -40,12 +40,9 @@ class Forecast
         }
 
         foreach($this->suppliers as $supplier) {
-            $weatherResponseArray = json_decode($supplier->fetchWeatherInformation($city), true);
-            $this->forecasts[] = $weatherResponseArray['current_weather']['temperature'];
+            $this->forecasts[] = $supplier->fetchCurrentWeather($city);
         }
 
         return $this->forecasts;
-
     }
-
 }
