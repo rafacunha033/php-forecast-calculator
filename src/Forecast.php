@@ -33,5 +33,19 @@ class Forecast
         $this->suppliers[] = $supplier;
     }
 
+    public function fetch($city)  
+    {
+        if(empty($this->suppliers)) {
+            return throw new InvalidArgumentException("You must add at least 1 Supplier. None have been added.");
+        }
+
+        foreach($this->suppliers as $supplier) {
+            $weatherResponseArray = json_decode($supplier->fetchWeatherInformation($city), true);
+            $this->forecasts[] = $weatherResponseArray['current_weather']['temperature'];
+        }
+
+        return $this->forecasts;
+
+    }
 
 }
