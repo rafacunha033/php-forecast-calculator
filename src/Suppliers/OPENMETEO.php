@@ -39,7 +39,7 @@ class OPENMETEO implements WeatherSupplierInterface
         curl_setopt_array($ch, $options);
         $responseArray = json_decode(curl_exec($ch), true);
         
-        return $responseArray['current_weather']['temperature'];   
+        return $responseArray;   
     }
 
     
