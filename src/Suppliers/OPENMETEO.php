@@ -9,26 +9,23 @@ use PhpWeather\Interfaces\WeatherSupplierInterface;
 class OPENMETEO implements WeatherSupplierInterface
 {
     public $foreacast_api_url = "https://api.open-meteo.com/v1/forecast?";
-    public $geocoding_api_url = "https://geocoding-api.open-meteo.com/v1/search?";
 
     public function __construct()
     {
         
     }
     
-    public function fetchCurrentWeather(string $city)
+    public function fetchForecast($latitude, $longitude, $timezone = null)
     {
-        if (!is_string($city)) {
-            throw new InvalidArgumentException("Parameter 'city' must be a string.");
+        if(empty($latitude) || empty($longitude)) {
+            return throw new InvalidArgumentException('Empty latitude or longitude!');
         }
 
-        $coordinates = $this->fetchCoordinates($city);
-
         $params = [
-            "latitude" => $coordinates->latitude,
-            "longitude" => $coordinates->longitude,
-            "timezone" => $coordinates->timezone,
-            "current_weather" => true
+            "latitude" => $latitude,
+            "longitude" => $longitude,
+            "daily" => ["temperature_2m_max", "temperature_2m_min"],
+            "timezone" => $timezone
         ];
 
         $url = $this->foreacast_api_url.http_build_query($params);
@@ -45,26 +42,5 @@ class OPENMETEO implements WeatherSupplierInterface
         return $responseArray['current_weather']['temperature'];   
     }
 
-    public function fetchCoordinates(string $city)
-    {
-        $ch = curl_init();
-       
-        $params = [
-            "name" => $city,
-            "format" => "json"
-        ];
-
-        $url = $this->geocoding_api_url.http_build_query($params);
     
-        $options = [
-            CURLOPT_URL => $url,
-            CURLOPT_RETURNTRANSFER => true
-        ];
-        
-        curl_setopt_array($ch, $options);
-        
-        $response = json_decode(curl_exec($ch));
-
-        return $response->results[0];     
-    }
 }
