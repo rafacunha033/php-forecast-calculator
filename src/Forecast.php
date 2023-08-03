@@ -3,6 +3,7 @@
 namespace PhpWeather;
 
 use InvalidArgumentException;
+use PhpWeather\Interfaces\GeocodingInterface;
 use PhpWeather\Interfaces\WeatherSupplierInterface;
 use PhpWeather\Suppliers\OPENMETEO;
 
@@ -19,9 +20,35 @@ class Forecast
     /** @var array */
     public $suppliers;
 
+    /** @var Interfaces\GeocodingInterface */
+    public $geocoding;
+
     public function __construct()
     {
-        $this->openMeteo = new OPENMETEO;
+    }
+
+    public function fetch($city)  
+    {
+        if(empty($this->suppliers)) {
+            return throw new InvalidArgumentException("You must add at least 1 Supplier. None have been added.");
+        }
+
+        if(empty($this->geocoding)) {
+            return throw new InvalidArgumentException("You must add a geocoding supplier. None have been added.");
+        }
+
+        [ $latitude, $longitude, $timezone ] = $this->geocoding->fetchCoordinatesAndTimezone($city);
+
+        foreach($this->suppliers as $supplier) {
+            $this->forecasts[] = $supplier->fetchForecast($latitude, $longitude, $timezone);
+        }
+
+        return $this->forecasts;
+    }
+
+    public function setGeocoding(GeocodingInterface $geocoding)
+    {
+        $this->geocoding = $geocoding;
     }
 
     public function addSupplier($supplier)
@@ -33,16 +60,4 @@ class Forecast
         $this->suppliers[] = $supplier;
     }
 
-    public function fetch($city)  
-    {
-        if(empty($this->suppliers)) {
-            return throw new InvalidArgumentException("You must add at least 1 Supplier. None have been added.");
-        }
-
-        foreach($this->suppliers as $supplier) {
-            $this->forecasts[] = $supplier->fetchCurrentWeather($city);
-        }
-
-        return $this->forecasts;
-    }
 }
