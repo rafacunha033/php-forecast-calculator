@@ -4,5 +4,5 @@ namespace PhpWeather\Interfaces;
 
 interface GeocodingInterface
 {
-    public function fetchCoordinates(string $city);
+    public function fetchCoordinatesAndTimezone(string $city);
 }
