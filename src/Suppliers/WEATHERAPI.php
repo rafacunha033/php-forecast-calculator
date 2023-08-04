@@ -2,17 +2,20 @@
 
 namespace PhpWeather\Suppliers;
 
-use Exception;
 use InvalidArgumentException;
+use PhpWeather\Hydrators\WEATHERAPI_HYDRATOR;
 use PhpWeather\Interfaces\WeatherSupplierInterface;
 
 class WEATHERAPI implements WeatherSupplierInterface
 {
     public $foreacast_api_url = "https://api.weatherapi.com/v1/forecast.json?";
 
+    /** @var WEATHERAPI_HYDRATOR */
+    public $hydrator;
+
     public function __construct()
     {
-        
+        $this->hydrator = new WEATHERAPI_HYDRATOR;
     }
     
     public function fetchForecast($latitude, $longitude, $timezone = null)
@@ -38,7 +41,7 @@ class WEATHERAPI implements WeatherSupplierInterface
         curl_setopt_array($ch, $options);
         $responseArray = json_decode(curl_exec($ch), true);
         
-        return $responseArray;   
+        return $this->hydrator->hydrate($responseArray);   
     }
 
     
