@@ -5,7 +5,6 @@ namespace PhpWeather;
 use InvalidArgumentException;
 use PhpWeather\Interfaces\GeocodingInterface;
 use PhpWeather\Interfaces\WeatherSupplierInterface;
-use PhpWeather\Suppliers\OPENMETEO;
 
 class Forecast
 {
