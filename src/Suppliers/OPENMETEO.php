@@ -1,18 +1,22 @@
 <?php
 
-namespace PhpWeather\Suppliers;
+namespace PhpForecast\Suppliers;
 
 use Exception;
 use InvalidArgumentException;
-use PhpWeather\Interfaces\WeatherSupplierInterface;
+use PhpForecast\Hydrators\OPENMETEO_HYDRATOR;
+use PhpForecast\Interfaces\WeatherSupplierInterface;
 
 class OPENMETEO implements WeatherSupplierInterface
 {
     public $foreacast_api_url = "https://api.open-meteo.com/v1/forecast?";
 
+    /** @var OPENMETEO_HYDRATOR */
+    public $hydrator;
+
     public function __construct()
     {
-        
+        $this->hydrator = new OPENMETEO_HYDRATOR;
     }
     
     public function fetchForecast($latitude, $longitude, $timezone = null)
@@ -39,8 +43,6 @@ class OPENMETEO implements WeatherSupplierInterface
         curl_setopt_array($ch, $options);
         $responseArray = json_decode(curl_exec($ch), true);
         
-        return $responseArray;   
-    }
-
-    
+        return $this->hydrator->hydrate($responseArray);   
+    }    
 }

@@ -1,8 +1,8 @@
 <?php
 
-namespace PhpWeather\Geocoding;
+namespace PhpForecast\Geocoding;
 
-use PhpWeather\Interfaces\GeocodingInterface;
+use PhpForecast\Interfaces\GeocodingInterface;
 
 class OPENMETEO_GEOCODING implements GeocodingInterface
 {

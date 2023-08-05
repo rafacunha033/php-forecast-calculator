@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpWeather\Hydrators;
+namespace PhpForecast\Hydrators;
 
 class WEATHERAPI_HYDRATOR 
 {

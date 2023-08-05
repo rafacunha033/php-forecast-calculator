@@ -1,8 +1,8 @@
 <?php 
 
-namespace PhpWeather\Hydrators;
+namespace PhpForecast\Hydrators;
 
-use PhpWeather\Interfaces\SupplierHydratorInterface;
+use PhpForecast\Interfaces\SupplierHydratorInterface;
 
 class OPENMETEO_HYDRATOR implements SupplierHydratorInterface
 {

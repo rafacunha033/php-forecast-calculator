@@ -1,10 +1,10 @@
 <?php 
 
-namespace PhpWeather;
+namespace PhpForecast;
 
 use InvalidArgumentException;
-use PhpWeather\Interfaces\GeocodingInterface;
-use PhpWeather\Interfaces\WeatherSupplierInterface;
+use PhpForecast\Interfaces\GeocodingInterface;
+use PhpForecast\Interfaces\WeatherSupplierInterface;
 
 class Forecast
 {

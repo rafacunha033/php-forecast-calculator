@@ -2,7 +2,7 @@
     "name": "rafacunha033/php-weather",
     "autoload": {
         "psr-4": {
-            "PhpWeather\\": "src/"
+            "PhpForecast\\": "src/"
         }
     },
     "authors": [

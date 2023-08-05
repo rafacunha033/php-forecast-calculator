@@ -1,10 +1,10 @@
 <?php
 
-namespace PhpWeather\Suppliers;
+namespace PhpForecast\Suppliers;
 
 use InvalidArgumentException;
-use PhpWeather\Hydrators\WEATHERAPI_HYDRATOR;
-use PhpWeather\Interfaces\WeatherSupplierInterface;
+use PhpForecast\Hydrators\WEATHERAPI_HYDRATOR;
+use PhpForecast\Interfaces\WeatherSupplierInterface;
 
 class WEATHERAPI implements WeatherSupplierInterface
 {

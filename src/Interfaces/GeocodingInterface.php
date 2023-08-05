@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpWeather\Interfaces;
+namespace PhpForecast\Interfaces;
 
 interface GeocodingInterface
 {
