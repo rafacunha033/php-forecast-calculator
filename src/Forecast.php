@@ -22,6 +22,9 @@ class Forecast
     /** @var Interfaces\GeocodingInterface */
     public $geocoding;
 
+    /** @var array */
+    public $averageForecast;
+
     public function __construct()
     {
     }
@@ -42,7 +45,33 @@ class Forecast
             $this->forecasts[] = $supplier->fetchForecast($latitude, $longitude, $timezone);
         }
 
-        return $this->forecasts;
+        return $this->calculate();
+    }
+
+    public function calculate()
+    {
+        if(empty($this->forecasts)) {
+            return throw new InvalidArgumentException("There aren't forecasts.");
+        }
+
+        $count = (float) count($this->suppliers);
+        foreach($this->forecasts as $forecasts) {
+            foreach($forecasts as $day => $forecast) {
+                if(isset($this->averageForecast[$day])) {
+                    $this->averageForecast[$day] = [
+                        "temperature_max" => $this->averageForecast[$day]["temperature_max"] + ($forecast["temperature_max"] / $count),
+                        "temperature_min" => $this->averageForecast[$day]["temperature_min"] + ($forecast["temperature_min"] / $count),
+                    ];
+                } else {
+                    $this->averageForecast[$day] = [
+                        "temperature_max" => $forecast["temperature_max"] / $count,
+                        "temperature_min" => $forecast["temperature_min"] / $count
+                    ];
+                }
+            }    
+        }
+
+        return $this->averageForecast;
     }
 
     public function setGeocoding(GeocodingInterface $geocoding)
